@@ -1,0 +1,55 @@
+Source: http://www.fourmilab.ch/webtools/midicsv/#
+
+midicsv
+
+NAME
+midicsv - translate MIDI file to CSV
+SYNOPSIS
+midicsv [ -u -v ] [ infile [ outfile ] ]
+DESCRIPTION
+midicsv reads a standard MIDI file and decodes it into a CSV (Comma-Separated Value) file which preserves all the information in the MIDI file. The ASCII CSV file may be loaded into a spreadsheet or database application, or processed by a program to transform the MIDI data (for example, to key transpose a composition or extract a track from a multi-track sequence). A CSV file in the format created by midicsv may be converted back into a standard MIDI file with the csvmidi program.
+
+OPTIONS
+-u
+Print how-to-call information.
+-v
+Print verbose debugging information on standard error. The MIDI file header is dumped, along with the length of each track in the file.
+FILES
+If no infile is specified or infile is “-”, midicsv reads its input from standard input; if no outfile is given or outfile is “-”, CSV output is written to standard output. The input and output are processed in a strictly serial manner; consequently midicsv may be used in pipelines without restrictions.
+
+BUGS
+midicsv assumes its input is a well-formed standard MIDI file; while some error checking is performed, gross errors in the input file may cause midicsv to crash.
+
+Please report problems to bugs at fourmilab.ch.
+
+-------------------------
+
+csvmidi
+NAME
+csvmidi - encode CSV file as MIDI
+SYNOPSIS
+csvmidi [ -u -v -x -z ] [ infile [ outfile ] ]
+DESCRIPTION
+csvmidi reads a CSV (Comma-Separated Value) file in the format written by midicsv and creates the equivalent standard MIDI file.
+
+OPTIONS
+-u
+Print how-to-call information.
+-v
+Print verbose debugging information on standard error. The MIDI file header is dumped, along with the length of each track in the file.
+-x
+MIDI streams support a rudimentary form of compression in which successive events with the same “status” (event type and channel) may omit the status byte. By default csvmidi avails itself of this compression. If the -x option is specified, the status byte is emitted for all events—it is never compressed even when the MIDI standard permits it to be.
+-z
+Most errors detected in CSV records cause a warning message to be displayed on standard error and the record ignored. The -z option causes csvmidi to immediately terminate processing when the first error is detected.
+EXIT STATUS
+If no errors or warnings are detected csvmidi exits with status 0. A status of of 1 is returned if one or more errors were detected in the CSV input file, while a status of 2 indicates a syntax error on the command line or inability to open the input or output file.
+
+FILES
+If no infile is specified or infile is “-”, csvmidi reads its input from standard input; if no outfile is given or outfile is “-”, MIDI output is written to standard output. The input and output are processed in a strictly serial manner; consequently csvmidi may be used in pipelines without restrictions.
+
+BUGS
+csvmidi assumes its input is in the format written by midicsv. If supplied a CSV file with well-formed records which nonetheless makes no semantic sense as a MIDI file, the results will, in all likelihood, simply perplex any program or instrument to which it's sent. csvmidi checks for missing fields and range checks all numeric values, but does not perform higher-level consistency checking (for example, making sure that every note on event is paired with a subsequent note off). That level of verification, if required, should be done on the CSV file before it is processed by csvmidi.
+
+Exporting a file to CSV with midicsv and then importing it with csvmidi is not guaranteed to create an identical MIDI file. MIDI files support compression modes which are not obligatory. A MIDI file exported to CSV and then re-imported should, however, be equivalent to the original file and should, if exported to CSV, be identical to the CSV exported from the original file.
+
+Please report problems to bugs at fourmilab.ch.
