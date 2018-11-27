@@ -2,3 +2,5 @@ Sources of midi files:
 
 http://www.piano-midi.de/chopin.htm
 http://www.midiworld.com/chopin.htm
+
+find . -type f -iname "*.midi" | while read file; do ./to_csv.sh "$file"  "${file%.midi}.csv" ; done
