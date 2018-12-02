@@ -31,3 +31,8 @@ else
     echo "Sorted improperly"
     exit 1
 fi
+
+sed -i -e 's/Program_c/D/g' "$output_file_name"
+sed -i -e 's/Note_on_c/C/g' "$output_file_name"
+sed -i -e 's/Note_off_c/F/g' "$output_file_name"
+sed -i -e 's/Control_c/E/g' "$output_file_name"
