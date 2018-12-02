@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux
+set -eu
 set -o pipefail
 
 input_file=$1
@@ -23,9 +23,10 @@ echo "
 2, 0, Program_c, 0, 0" > "$out_file"
 
 awk '{print "2,",$1,$2,"0,",$3,$4}' "$input_file" >> "$out_file"
+last_value=$(tail -n 1 "$out_file"  |  cut -d ',' -f2)
 
 echo "
-2, 72716, End_track
+2, $((last_value +1)), End_track
 3, 0, Start_track
 3, 0, Title_t, "Played by Dr. ML"
 3, 0, End_track
